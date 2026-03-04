@@ -544,6 +544,13 @@
     .hero-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
     .stat-card { padding: 18px 12px; }
     .stat-label { font-size: 9px; }
+    .stat-num {
+      font-size: clamp(18px, 2.6vw, 30px);
+      line-height: 1.05;
+      display: inline-block;
+      max-width: 100%;
+    }
+    .stat-card { padding: 16px 10px; }
     .contact-grid { grid-template-columns: 1fr; gap: 36px; }
 
     .edu-block { grid-template-columns: 1fr; gap: 18px; padding: 28px; }
