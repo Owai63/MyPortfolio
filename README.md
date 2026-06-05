@@ -28,14 +28,6 @@ portfolio/
 | 08 | Open To | Role cards — positions open to |
 | 09 | Contact | Email, phone, LinkedIn, location |
 
-## Skills Radar
-
-The canvas radar chart in the Skills section plots 7 axes (edit the two arrays at the top of `drawRadar()` in `js/main.js`):
-
-```js
-const labels = ['Firmware', 'IoT', 'Cloud', 'Database', 'Web Dev', 'ML/AI', 'Hardware'];
-const vals   = [0.92, 0.88, 0.75, 0.82, 0.78, 0.72, 0.85];   // 0–1 per axis
-```
 
 ## Projects
 
@@ -97,16 +89,6 @@ Projects live as data objects in the `DOSSIERS` array in `js/main.js` and render
 | Open To — role cards section | `css/style.css` |
 | Konami code easter egg ↑↑↓↓←→←→BA | `js/main.js` |
 
-## Usage
-
-Just open `index.html` in any modern browser — no build step required.
-
-To update your GitHub username (for the live repo grid) edit line 1 of `js/main.js`:
-
-```js
-const GH_USERNAME = 'owai63';   // ← change this
-```
-
 ## Customisation
 
 All colour variables are at the top of `css/style.css`:
@@ -127,31 +109,12 @@ Timeline dot colours follow the same palette — cyan → pink → green → pur
 .tli:nth-child(6) .tli-co { color:var(--or); }
 ```
 
-## Typewriter Roles
-
-The hero subtitle cycles through these roles (edit in `js/main.js`):
-
-```js
-const roles = [
-  'Firmware Engineer', 'IoT Architect', 'Embedded Developer',
-  'Cloud Integrator',  'Systems Engineer', 'nRF9160 Specialist',
-  'Systems Administrator', 'IoT Solutions Engineer'
-];
-```
 
 ## Responsive
 
 - ≥ 1024 px — full two-column layout with orbital visual
 - 768 – 1023 px — single column, hamburger menu
 - < 768 px — mobile optimised, flip-cards shown flat, tap-to-flip enabled
-
-## Nav Sections
-
-The active-nav scroll tracker watches these IDs in order:
-
-```js
-['experience','skills','projects','github','education','awards','certifications','opento','contact']
-```
 
 ## Easter Egg
 
