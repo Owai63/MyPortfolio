@@ -1,4 +1,4 @@
-# MOI.ENG Portfolio v4.0
+# MOI.ENG Portfolio v5.0
 
 > Cyberpunk / embedded-systems aesthetic portfolio — Muhammad Owais Iqbal Malik
 
@@ -19,14 +19,41 @@ portfolio/
 | # | Section | Description |
 |---|---------|-------------|
 | 01 | Experience | 4-entry animated timeline |
-| 02 | Skills | Pill grid + radar chart |
-| 03 | Projects | Flip-card carousel (5 projects) |
+| 02 | Skills | Pill grid + radar chart (7 axes) |
+| 03 | Projects | Dossier console — filterable index + viewport (11 projects) |
 | 04 | GitHub | Live repo grid via GitHub API |
 | 05 | Education | Degree + CGPA card |
 | 06 | Awards | Gold & Silver medal cards |
 | 07 | Certifications | Flip-card carousel (5 certs) |
 | 08 | Open To | Role cards — positions open to |
 | 09 | Contact | Email, phone, LinkedIn, location |
+
+## Skills Radar
+
+The canvas radar chart in the Skills section plots 7 axes (edit the two arrays at the top of `drawRadar()` in `js/main.js`):
+
+```js
+const labels = ['Firmware', 'IoT', 'Cloud', 'Database', 'Web Dev', 'ML/AI', 'Hardware'];
+const vals   = [0.92, 0.88, 0.75, 0.82, 0.78, 0.72, 0.85];   // 0–1 per axis
+```
+
+## Projects
+
+Projects live as data objects in the `DOSSIERS` array in `js/main.js` and render into a filterable dossier console (All / Production / Academic). To add a project, append an object with `id`, `icon`, `cat`, `org`, `title`, `status`, `statusLabel`, `context`, `stack`, `bullets[]`, `tags[]`, and optional `note` / `badge`.
+
+| Project | Category | Org / Context |
+|---------|----------|---------------|
+| Car Tracker — LTE/BLE/GPS IoT Device | Production | Palmlabs |
+| Production Database & Tracker Device Management | Production | Palmlabs |
+| Shooting Range Target Control System — XBee & LoRa | Production | Palmlabs |
+| Pet Tracker — NB-IoT/LTE-M Asset Tracker | Production | Palmlabs |
+| Cedrus Group — Corporate Website | Production | Cedrus Group Internship |
+| CareConnect — Hospital Website | Production | Freelance Project |
+| Brain-Controlled Wheelchair | Academic | Final Year Project (Gold Medal) |
+| Hand Gesture Controlled Car | Academic | Embedded Systems |
+| FSM 4-Lane Traffic Light Controller | Academic | Digital Design |
+| Bank Management System | Academic | C++ / OOP |
+| Online Food Ordering System | Academic | Full-Stack Web |
 
 ## Experience Entries
 
@@ -53,12 +80,13 @@ portfolio/
 | Typewriter role subtitle (8 roles) | `js/main.js` |
 | Text scramble section headings | `js/main.js` |
 | Skill pill stagger entrance | `js/main.js` |
-| Skill radar chart (canvas) | `js/main.js` |
+| Skill radar chart — 7 axes (canvas) | `js/main.js` |
 | Timeline scan beam | `css/style.css` |
 | 4-colour timeline dot progression | `css/style.css` |
-| 3-D tilt + spotlight on project cards | `js/main.js` |
+| Project dossier console (filterable index + viewport) | `js/main.js` |
+| Project category filters (All / Production / Academic) | `js/main.js` |
 | Flip certification cards | `css/style.css` |
-| Project + cert carousels with dots | `js/main.js` |
+| Certification carousel with dots | `js/main.js` |
 | Mobile tap-to-flip cards | `js/main.js` |
 | Live GitHub repository grid | `js/main.js` |
 | GitHub repo filter (All / Original / Forks / Starred) | `js/main.js` |
