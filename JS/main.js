@@ -1,7 +1,7 @@
 /* ============================================================
    MOI.ENG Portfolio — Main JavaScript
    Author : Muhammad Owais Iqbal Malik
-   Version: 4.0
+   Version: 5.0
    ============================================================ */
 
 const GH_USERNAME = 'owai63';
@@ -10,7 +10,7 @@ const GH_USERNAME = 'owai63';
    BOOT SEQUENCE  (longer / more lines)
 ══════════════════════════════════════════ */
 const bootLines = [
-  { t: 'MOI.ENG PORTFOLIO OS v4.0 — INITIALIZING …',             d:   0 },
+  { t: 'MOI.ENG PORTFOLIO OS v5.0 — INITIALIZING …',             d:   0 },
   { t: 'CPU: ARM Cortex-M4 @ 168 MHz ................. <span class="ok">[READY]</span>',  d: 220 },
   { t: 'Loading embedded firmware modules ........... <span class="ok">[OK]</span>',      d: 440 },
   { t: 'Mounting hardware abstraction layer .......... <span class="ok">[OK]</span>',      d: 650 },
@@ -67,7 +67,9 @@ document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; })
 
 function bindCursor() {
   if (!cd || window.matchMedia('(hover:none),(pointer:coarse)').matches) return;
-  document.querySelectorAll('a,button,[onclick],.tli-hdr,.pc-flip,.cf,.aw-c,.hstat,.sk-pill,.ttag').forEach(el => {
+  document.querySelectorAll('a,button,[onclick],.tli-hdr,.cf,.aw-c,.hstat,.sk-pill,.ttag,.dsr-row,.dsr-fbtn,.pb-link').forEach(el => {
+    if (el.dataset.curBound) return;     // avoid stacking duplicate listeners
+    el.dataset.curBound = '1';
     el.addEventListener('mouseenter', () => {
       cd.style.transform = 'translate(-50%,-50%) scale(2.5)';
       cr.style.width = '50px'; cr.style.height = '50px';
@@ -459,6 +461,11 @@ function tlToggle(hdr) {
   tg.textContent = item.classList.contains('open') ? '[ collapse ]' : '[ expand ]';
 }
 
+function goToProjects() {
+  const sec = document.getElementById('projects');
+  if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 
 /* ══════════════════════════════════════════
    MOBILE NAV
@@ -506,8 +513,8 @@ document.querySelectorAll('.mbtn').forEach(btn => {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const W = 340, H = 340, cx = W / 2, cy = H / 2, R = 120;
-  const labels = ['Firmware', 'IoT', 'Cloud', 'Hardware', 'ML/AI', 'Web Dev'];
-  const vals   = [0.92, 0.88, 0.75, 0.85, 0.65, 0.55];
+  const labels = ['Firmware', 'IoT', 'Cloud', 'Database', 'Web Dev', 'ML/AI', 'Hardware'];
+  const vals   = [0.92, 0.88, 0.75, 0.82, 0.78, 0.72, 0.85];
   const N = labels.length;
   let animPct = 0;
 
@@ -720,7 +727,7 @@ function easterEgg() {
   msg.innerHTML =
     '<div style="font-size:2em;margin-bottom:12px">⚡</div>'
     + '<div style="font-size:1.2em;font-weight:700;font-family:Orbitron">CHEAT CODE ACTIVATED</div>'
-    + '<div style="margin-top:10px;color:var(--gr);font-size:.85em">MOI.ENG v3.0 // FIRMWARE UNLOCKED</div>'
+    + '<div style="margin-top:10px;color:var(--gr);font-size:.85em">MOI.ENG v5.0 // FIRMWARE UNLOCKED</div>'
     + '<div style="margin-top:6px;color:rgba(0,255,224,.4);font-size:.75em">click to close</div>';
   msg.onclick = () => msg.remove();
   document.body.appendChild(msg);
@@ -818,26 +825,297 @@ function initCarousel(trackId, prevId, nextId, dotsId, autoDelay) {
   startAuto();
 }
 
-// Init both carousels after DOM is ready (delay so widths are calculated)
+// Init cert carousel after DOM is ready (delay so widths are calculated)
 window.addEventListener('load', () => {
   setTimeout(() => {
-    initCarousel('pc-track', 'pc-prev', 'pc-next', 'pc-dots', 3000);
     initCarousel('cf-track', 'cf-prev', 'cf-next', 'cf-dots', 3500);
   }, 200);
 });
 
 /* ══════════════════════════════════════════
-   MOBILE TAP-TO-FLIP (touch devices)
+   PROJECT DOSSIER CONSOLE
+══════════════════════════════════════════ */
+const DOSSIERS = [
+  {
+    id: 'car-tracker', icon: '🛰️', cat: 'production', org: 'Palmlabs',
+    title: 'Car Tracker — LTE/BLE/GPS IoT Device', status: 'live',
+    statusLabel: 'Deployed', context: 'Embedded Engineer',
+    stack: 'EC200U · QuecOpen',
+    bullets: [
+      'Architected and delivered a production-grade vehicle tracking system on the EC200U module using the QuecOpen SDK, handling the full development lifecycle from hardware bring-up to field deployment',
+      'Engineered a robust FOTA pipeline over HTTP with integrity checking, rollback protection, and version management — enabling seamless over-the-air firmware updates to deployed units',
+      'Designed a cross-platform BLE Configurator (PC and mobile) leveraging custom GATT services and characteristics for real-time device provisioning, parameter tuning, and status monitoring',
+      'Built and deployed an AWS-backed cloud dashboard (EC2 + S3) for live fleet monitoring, telemetry ingestion, and historical data analytics; integrated GCP for secondary data pipelines',
+      'Optimised memory layout and power states; conducted systematic field testing of GPS fix acquisition, LTE connectivity stability, and BLE range under real-world conditions'
+    ],
+    tags: ['C/C++', 'QuecOpen SDK', 'BLE GATT', 'GPS', 'HTTP/FOTA', 'Python', 'AWS EC2/S3', 'GCP']
+  },
+  {
+    id: 'prod-db', icon: '🗄️', cat: 'production', org: 'Palmlabs',
+    title: 'Production Database & Tracker Device Management', status: 'live',
+    statusLabel: 'Operational', context: 'Embedded Engineer',
+    stack: 'MySQL',
+    bullets: [
+      'Developed and maintained a production-side database system to manage company tracker operations, connected device records, SIM details, customer/device assignment, installation status, and service history',
+      'Structured operational records for GPS trackers and other field devices, making it easier for the team to track active units, deployed devices, pending configurations, and support cases',
+      'Managed tracker and device data across the production workflow, including device IDs, IMEI/SIM references, firmware/configuration status, customer allocation, and follow-up actions',
+      'Created reporting-friendly database views and records to support production planning, device monitoring, troubleshooting, inventory visibility, and management decision-making',
+      'Worked closely with firmware, backend, and operations requirements so the database matched real device behaviour, field deployment needs, and internal production processes'
+    ],
+    tags: ['MySQL', 'Production Database', 'Tracker Management', 'Device Records', 'SIM / IMEI Tracking', 'Reporting', 'Operations Workflow']
+  },
+  {
+    id: 'shooting-range', icon: '🎯', cat: 'production', org: 'Palmlabs',
+    title: 'Shooting Range Target Control System — XBee & LoRa', status: 'wip',
+    statusLabel: 'In Development', context: 'Embedded Engineer',
+    stack: 'ATSAME70',
+    bullets: [
+      'Developing a smart shooting-range target-control platform on the ATSAME70 MCU with two communication variants: an XBee-based version already deployed and a LoRa-based version under active development',
+      'Implemented the working XBee version with API-mode packet handling, command queues, ACK/retry logic, target ID setup, host addressing, network configuration, and remote command responses',
+      'Building the LoRa version to extend long-range target communication and support additional target/device types.',
+      'Integrated motor-control workflows for different target/device types, including limit-switch handling, manual movement logic, encoder logic, and speed control',
+      'Added BLE configuration support for reading/writing device parameters.',
+      'Developed custom protocol to send an OTA Update to ATSAME70 and ESP32 over XBEE and LoRa, with integrity checking and rollback protection.'
+    ],
+    tags: ['C', 'ATSAME70', 'ESP32', 'XBee API', 'LoRa', 'BLE Config', 'Motor Control', 'OTA'],
+    note: 'XBee version working · LoRa version under active development'
+  },
+  {
+    id: 'pet-tracker', icon: '🐾', cat: 'production', org: 'Palmlabs',
+    title: 'Pet Tracker — NB-IoT/LTE-M Asset Tracker', status: 'wip',
+    statusLabel: 'Deployed', context: 'Embedded Engineer',
+    stack: 'nRF9160 · Zephyr',
+    bullets: [
+      'Led system architecture for a low-power GPS Pet Tracker on the Nordic nRF9160 SiP, from connectivity stack selection through to cloud telemetry design',
+      'Developed modem initialisation, LTE-M/NB-IoT bearer management, and GPS data acquisition routines within the nRF Connect SDK (Zephyr RTOS) framework',
+      'Produced detailed technical design documentation covering LTE session management, GPS cold/warm-start workflows, and power-optimised tracking duty cycles'
+    ],
+    tags: ['nRF9160', 'nRF Connect SDK', 'Zephyr RTOS', 'LTE-M/NB-IoT', 'GPS', 'UART']
+  },
+  {
+    id: 'cedrus-website', icon: '🌐', cat: 'production', org: 'Cedrus Group Internship',
+    title: 'Cedrus Group — Corporate Website', status: 'live',
+    statusLabel: 'Delivered', context: 'Internship — Web Developer',
+    stack: 'HTML · CSS · JS',
+    bullets: [
+      'Designed and built the corporate website for Cedrus Group (Pvt.) Ltd. during my internship — a responsive, multi-page site covering Home, About Us, Services, and Careers',
+      'Implemented a shared navigation bar and footer with a mobile hamburger menu and an expandable "Solutions" dropdown for consistent, DRY components across every page',
+      'Developed an auto-advancing hero slider with manual previous/next controls and pause-on-hover using vanilla JavaScript (no frameworks or libraries)',
+      'Built a fully responsive layout with Flexbox and CSS Grid, centralising brand theming through CSS variables and tuning breakpoints for desktop, tablet, and mobile'
+    ],
+    tags: ['HTML5', 'CSS3', 'Flexbox / Grid', 'CSS Variables', 'Vanilla JS', 'Responsive Design', 'Hero Slider', 'Boxicons / Font Awesome'],
+    note: '💼 Internship — Cedrus Group (Pvt.) Ltd.'
+  },
+  {
+    id: 'hospital-website', icon: '🏥', cat: 'production', org: 'Freelance Project',
+    title: 'CareConnect — Hospital Website', status: 'live',
+    statusLabel: 'Delivered', context: 'Freelance — Frontend Developer',
+    stack: 'HTML · CSS · JS',
+    bullets: [
+      'Delivered a complete static, multi-page hospital website as a freelance project — Home, About Us, Departments, Appointment, and Contact pages with a clean blue-and-white medical theme',
+      'Built a card-based Departments page showcasing services such as Cardiology, Dermatology, ICU, and Internal Medicine, with structured content, images, and lists',
+      'Implemented appointment and contact forms with JavaScript validation for required fields and email format before submission',
+      'Maintained consistent header, footer, and responsive navigation with active-page styling, keeping the layout simple, readable, and user-friendly across all pages'
+    ],
+    tags: ['HTML5', 'CSS3', 'JavaScript', 'Form Validation', 'Multi-Page UI', 'Department Cards', 'Responsive Nav', 'Healthcare UI'],
+    note: '🧾 Freelance — Frontend Development'
+  },
+  // {
+  //   id: 'cloud-infra', icon: '☁️', cat: 'production', org: 'Palmlabs',
+  //   title: 'Production Cloud Infrastructure & IoT Backend', status: 'live',
+  //   statusLabel: 'Operational', context: 'Systems Administrator',
+  //   stack: 'AWS · GCP · Ubuntu',
+  //   bullets: [
+  //     'Own and operate the full AWS stack (EC2, S3, IAM) underpinning production IoT device backends, ensuring 99%+ uptime and enforcing least-privilege security policies',
+  //     'Manage GCP infrastructure for high-throughput device telemetry ingestion, time-series storage, and analytics — handling data from thousands of connected field devices',
+  //     'Configured and hardened Ubuntu servers: Nginx reverse proxies, iptables firewalls, WireGuard VPNs, and TLS certificate management for secure device-to-cloud communication',
+  //     'Maintain automated deployment pipelines and monitoring dashboards; respond to infrastructure alerts and perform root-cause analysis to minimise mean time to recovery (MTTR)'
+  //   ],
+  //   tags: ['AWS EC2/S3/IAM', 'GCP', 'Linux/Ubuntu', 'Nginx', 'WireGuard VPN', 'Shell Scripting', 'System Monitoring']
+  // },
+  {
+    id: 'wheelchair', icon: '🧠', cat: 'academic', org: 'Final Year Project',
+    title: 'Brain-Controlled Wheelchair', status: 'done',
+    statusLabel: 'Completed', context: 'Hitec University',
+    stack: 'Python · Raspberry Pi',
+    badge: '🏅 Gold Medal Project',
+    bullets: [
+      'Built an EEG-driven, mind-controlled wheelchair that classifies live biosignals in real time using SVM and KNN machine-learning models',
+      'Integrated a Raspberry Pi and Arduino with motor drivers to translate classified intent into safe directional movement and stop commands',
+      'Developed a real-time Tkinter GUI dashboard for signal visualisation, mode selection, and live system monitoring',
+      'Recognised with the university Gold Medal as a standout final-year engineering project'
+    ],
+    tags: ['Python', 'SVM', 'KNN', 'Raspberry Pi', 'Arduino', 'Tkinter', 'Signal Processing', 'ML Pipelines'],
+    note: '🏅 Final Year — Gold Medal'
+  },
+  {
+    id: 'gesture-car', icon: '🤖', cat: 'academic', org: 'Academic Project',
+    title: 'Hand Gesture Controlled Car', status: 'done',
+    statusLabel: 'Completed', context: 'Embedded Systems',
+    stack: 'Arduino',
+    bullets: [
+      'Designed a motion-responsive robotic car steered by accelerometer-based hand gestures',
+      'Implemented gesture signal processing and motor control on Arduino, mapping tilt orientation to drive direction and speed',
+      'Built a wireless RF telemetry link between the glove controller and the vehicle for untethered control'
+    ],
+    tags: ['Arduino', 'C/C++', 'Accelerometer', 'Wireless RF', 'Motor Control', 'Embedded C']
+  },
+  {
+    id: 'fsm-traffic', icon: '🚦', cat: 'academic', org: 'Academic Project',
+    title: 'FSM 4-Lane Traffic Light Controller', status: 'done',
+    statusLabel: 'Completed', context: 'Digital Design',
+    stack: 'Verilog HDL',
+    bullets: [
+      'Implemented a four-lane traffic-light controller in Verilog HDL using a Finite State Machine architecture',
+      'Designed clock-driven state timing with an asynchronous reset for predictable, deterministic behaviour',
+      'Validated the design with a comprehensive simulation testbench covering all state transitions and edge cases'
+    ],
+    tags: ['Verilog HDL', 'FSM Design', 'Sequential Logic', 'Async Reset', 'Testbench', 'Simulation']
+  },
+  {
+    id: 'bank-system', icon: '🏦', cat: 'academic', org: 'Academic Project',
+    title: 'Bank Management System', status: 'done',
+    statusLabel: 'Completed', context: 'C++ / OOP',
+    stack: 'C++',
+    bullets: [
+      'Built a console C++ application with separate manager and client roles and permission-aware access',
+      'Implemented full account CRUD with deposits, withdrawals, and binary-file persistence for durable records',
+      'Added Caesar Cipher encryption for stored data, with structured exception handling and safe type casting throughout'
+    ],
+    tags: ['C++', 'OOP', 'File Handling', 'Caesar Cipher', 'Pointers', 'Exception Handling', 'Type Casting']
+  },
+  {
+    id: 'food-order', icon: '🍽️', cat: 'academic', org: 'Academic Project',
+    title: 'Online Food Ordering System', status: 'done',
+    statusLabel: 'Completed', context: 'Full-Stack Web',
+    stack: 'PHP · MySQL',
+    bullets: [
+      'Developed a database-driven food-ordering web application with a categorised menu and keyword search',
+      'Built image display and full order management on top of a normalised MySQL relational database',
+      'Delivered both frontend and backend, handling listings, orders, and data management end to end'
+    ],
+    tags: ['PHP', 'MySQL', 'HTML/CSS', 'Backend Dev', 'Frontend Dev', 'DB Management']
+  }
+];
+
+(function initDossiers() {
+  const indexEl = document.getElementById('dsr-index');
+  const viewEl  = document.getElementById('dsr-view');
+  if (!indexEl || !viewEl) return;
+
+  let filter = 'all';
+  let activeId = null;
+
+  // update filter counts
+  const setCount = (k, n) => { const e = document.getElementById('dsr-count-' + k); if (e) e.textContent = n; };
+  setCount('all', DOSSIERS.length);
+  setCount('production', DOSSIERS.filter(d => d.cat === 'production').length);
+  setCount('academic',  DOSSIERS.filter(d => d.cat === 'academic').length);
+
+  const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  function dossierBody(p) {
+    const catCls = p.cat === 'production' ? 'cat-prod' : 'cat-acad';
+    const catTxt = p.cat === 'production' ? 'Production' : 'Academic';
+    const stCls  = p.status === 'live' ? 'st-live' : p.status === 'wip' ? 'st-wip' : 'st-done';
+    return `
+      <div class="dsr-card">
+        <div class="dsr-head">
+          <div>
+            <div class="dsr-eyebrow">
+              <span class="dsr-ico-lg">${p.icon}</span>
+              <span class="dsr-cat ${catCls}">${catTxt}</span>
+              <span class="dsr-org">${esc(p.org)}</span>
+            </div>
+            <div class="dsr-vt">${esc(p.title)}</div>
+          </div>
+          ${p.badge ? `<span class="dsr-badge">${esc(p.badge)}</span>` : ''}
+        </div>
+        <div class="dsr-meta">
+          <div class="dsr-mk"><span>Status</span><b class="${stCls}">${esc(p.statusLabel)}</b></div>
+          <div class="dsr-mk"><span>Core Stack</span><b>${esc(p.stack)}</b></div>
+          <div class="dsr-mk"><span>Context</span><b>${esc(p.context)}</b></div>
+        </div>
+        <ul class="dsr-bul">${p.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+        <div class="dsr-tags">${p.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div>
+        ${p.note ? `<div class="dsr-note">${esc(p.note)}</div>` : ''}
+      </div>`;
+  }
+
+  function renderIndex() {
+    const list = DOSSIERS.filter(d => filter === 'all' || d.cat === filter);
+    if (!list.some(d => d.id === activeId)) activeId = list.length ? list[0].id : null;
+
+    indexEl.innerHTML = list.map((p, i) => {
+      const catCls = p.cat === 'production' ? 'cat-prod' : 'cat-acad';
+      const catTxt = p.cat === 'production' ? 'Production' : 'Academic';
+      const num = String(i + 1).padStart(2, '0');
+      const isActive = p.id === activeId;
+      return `
+        <button class="dsr-row${isActive ? ' active' : ''}" data-id="${p.id}">
+          <span class="dsr-num">${num}</span>
+          <span class="dsr-ic">${p.icon}</span>
+          <span class="dsr-rmeta">
+            <span class="dsr-rtt">${esc(p.title)}</span>
+            <span class="dsr-chips"><span class="dsr-cat ${catCls}">${catTxt}</span><span class="dsr-org">${esc(p.org)}</span></span>
+          </span>
+          <span class="dsr-dot" data-st="${p.status}" title="${esc(p.statusLabel)}"></span>
+        </button>
+        <div class="dsr-rbody${isActive ? ' open' : ''}" data-body="${p.id}">${dossierBody(p)}</div>`;
+    }).join('');
+
+    bindRows();
+    renderView();
+    if (typeof bindCursor === 'function') bindCursor();
+  }
+
+  function renderView() {
+    const p = DOSSIERS.find(d => d.id === activeId);
+    if (!p) { viewEl.innerHTML = ''; return; }
+    viewEl.innerHTML = dossierBody(p);
+    viewEl.classList.remove('dsr-anim');
+    void viewEl.offsetWidth;          // force reflow to replay animation
+    viewEl.classList.add('dsr-anim');
+  }
+
+  function bindRows() {
+    indexEl.querySelectorAll('.dsr-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const id = row.dataset.id;
+        const mobile = window.matchMedia('(max-width:860px)').matches;
+        if (mobile && id === activeId) {
+          // tap active row again on mobile → collapse
+          activeId = null;
+          row.classList.remove('active');
+          const b = indexEl.querySelector(`.dsr-rbody[data-body="${id}"]`);
+          if (b) b.classList.remove('open');
+          return;
+        }
+        activeId = id;
+        indexEl.querySelectorAll('.dsr-row').forEach(r => r.classList.toggle('active', r.dataset.id === id));
+        indexEl.querySelectorAll('.dsr-rbody').forEach(b => b.classList.toggle('open', b.dataset.body === id));
+        renderView();
+      });
+    });
+  }
+
+  document.querySelectorAll('#dsr-filters .dsr-fbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#dsr-filters .dsr-fbtn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filter = btn.dataset.filter;
+      renderIndex();
+    });
+  });
+
+  renderIndex();
+})();
+
+/* ══════════════════════════════════════════
+   MOBILE TAP-TO-FLIP — certifications
 ══════════════════════════════════════════ */
 (function initMobileFlip() {
   if (!window.matchMedia('(hover:none),(pointer:coarse)').matches) return;
-
-  /* ── Project cards ── */
-  document.querySelectorAll('.pc-flip').forEach(flip => {
-    flip.addEventListener('click', () => {
-      flip.classList.toggle('tapped');
-    });
-  });
 
   /* ── Cert cards ── */
   document.querySelectorAll('.cf').forEach(card => {
