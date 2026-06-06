@@ -908,7 +908,7 @@ const DOSSIERS = [
   },
   {
     id: 'hospital-website', icon: '🏥', cat: 'production', org: 'Freelance Project',
-    title: 'CareConnect — Hospital Website', status: 'live',
+    title: 'Hospital Website', status: 'live',
     statusLabel: 'Delivered', context: 'Freelance — Frontend Developer',
     stack: 'HTML · CSS · JS',
     bullets: [
